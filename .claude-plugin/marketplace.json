@@ -1,0 +1,18 @@
+{
+  "name": "piloxa",
+  "owner": {
+    "name": "Decentralized Publishing LLC",
+    "email": "support@piloxa.com",
+    "url": "https://piloxa.com"
+  },
+  "description": "Piloxa's own catalogue: the Piloxa plugin, which turns a letter or a document into real USPS Certified Mail after a person reviews and authorizes it.",
+  "plugins": [
+    {
+      "name": "piloxa",
+      "source": "./",
+      "description": "Send a letter or a document you already have as real USPS Certified Mail. Claude prepares the mailing and returns a review link; a person checks the pages, the recipient and the total, then pays and authorizes. Nothing is mailed or charged from inside the conversation.",
+      "category": "productivity",
+      "homepage": "https://piloxa.com"
+    }
+  ]
+}

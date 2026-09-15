@@ -1,0 +1,21 @@
+{
+  "name": "piloxa",
+  "displayName": "Piloxa — Certified Mail",
+  "version": "1.0.0",
+  "description": "Turn a letter you just wrote, or a document you already have, into a real piece of USPS Certified Mail. Piloxa prices the mailing, prints the pages, puts them in an envelope, pays the postage and hands it to the Postal Service, with USPS tracking and an optional Electronic Return Receipt recording who signed for it. Nothing is printed, mailed or charged from inside the conversation: Claude hands back a review link, and a person opens it, checks the exact pages and the recipient, sees one total, and pays and authorizes there. No account is needed to look. One page with the return receipt is $16.17 all in, or $13.18 without it; printing, envelope and postage are included and nothing is added at checkout. United States destinations. Useful for demand letters, notices to a landlord or employer, cease and desist letters, cancellations, billing and debt disputes, and any notice that has to be provably mailed.",
+  "author": {
+    "name": "Decentralized Publishing LLC",
+    "email": "support@piloxa.com",
+    "url": "https://piloxa.com"
+  },
+  "homepage": "https://piloxa.com",
+  "repository": "https://github.com/Piloxa/piloxa-plugin",
+  "keywords": [
+    "certified-mail",
+    "usps",
+    "postal-mail",
+    "demand-letter",
+    "legal-notice",
+    "proof-of-mailing"
+  ]
+}
