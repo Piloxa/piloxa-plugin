@@ -10,7 +10,7 @@
     {
       "name": "piloxa",
       "source": "./",
-      "description": "Send a letter or a document you already have as real USPS Certified Mail. Claude prepares the mailing and returns a review link; a person checks the pages, the recipient and the total, then pays and authorizes. Nothing is mailed or charged from inside the conversation.",
+      "description": "Send a letter or a document you already have as real USPS Certified Mail. Claude prepares the mailing and returns a review link; a person checks the pages, the recipient and the total, then pays and authorizes. Nothing is mailed or charged from inside the conversation. One page is $15.97 all in with the return receipt.",
       "category": "productivity",
       "homepage": "https://piloxa.com"
     }

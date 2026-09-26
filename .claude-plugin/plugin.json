@@ -1,8 +1,8 @@
 {
   "name": "piloxa",
-  "displayName": "Piloxa — Certified Mail",
-  "version": "1.0.0",
-  "description": "Turn a letter you just wrote, or a document you already have, into a real piece of USPS Certified Mail. Piloxa prices the mailing, prints the pages, puts them in an envelope, pays the postage and hands it to the Postal Service, with USPS tracking and an optional Electronic Return Receipt recording who signed for it. Nothing is printed, mailed or charged from inside the conversation: Claude hands back a review link, and a person opens it, checks the exact pages and the recipient, sees one total, and pays and authorizes there. No account is needed to look. One page with the return receipt is $16.17 all in, or $13.18 without it; printing, envelope and postage are included and nothing is added at checkout. United States destinations. Useful for demand letters, notices to a landlord or employer, cease and desist letters, cancellations, billing and debt disputes, and any notice that has to be provably mailed.",
+  "displayName": "Piloxa: Certified Mail",
+  "version": "1.1.0",
+  "description": "Turn a letter Claude just wrote, or a document you already have, into real USPS Certified Mail. Piloxa prints it, puts it in an envelope, pays the postage and hands it to the Postal Service, with USPS tracking and, by default, an Electronic Return Receipt recording who signed for it. Nothing is printed, mailed or charged from inside the conversation: it hands back a review link, and a person checks the exact pages, the recipient and one total, then pays and authorizes. No account, no API key, no sign-in to connect. One page is $15.97 all in with the return receipt, $12.97 with tracking only, $24.21 with the Evidence Pack (Certificate of Mailing, 7-year record) or $50.10 as a Deadline Notice (plus a same-day First-Class copy). Up to 10 pages. United States destinations. For demand letters, disputes, debt validation, deposit demands, notices to landlords, tenants, contractors, HOAs, insurers and collectors, pre-lien notices and notices of intent to sue.",
   "author": {
     "name": "Decentralized Publishing LLC",
     "email": "support@piloxa.com",
