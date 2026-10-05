@@ -2,7 +2,7 @@
   "mcpServers": {
     "piloxa": {
       "type": "http",
-      "url": "https://piloxa.com/mcp"
+      "url": "https://piloxa.com/mcp?src=marketplace:claude-plugin"
     }
   }
 }

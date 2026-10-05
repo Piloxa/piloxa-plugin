@@ -1,14 +1,24 @@
 # Piloxa: Certified Mail for Claude, Cursor and Grok
 
-Piloxa turns a letter your agent just wrote, or a document you already have, into a
-real piece of **USPS Certified Mail**: printed, folded into an envelope, postage
-paid, handed to the Postal Service, with USPS tracking and an optional
-**Electronic Return Receipt** — the electronic record of who signed for it.
+Piloxa — the physical-mail action layer for AI agents. Prepare, purchase, send
+and track USPS Certified Mail to any U.S. address. Human approval is required
+before payment or mailing.
 
-**Nothing is printed, mailed or charged from inside the conversation.** The agent
-hands back a review link. A person opens it, reads the exact pages that will
-print, checks the recipient and the one total, and pays and authorizes there.
-No account and no sign-in is needed to look.
+One page is $15.97 with the Electronic Return Receipt, $12.97 with tracking
+only, $24.21 with the Evidence Pack or $50.10 as a Deadline Notice. The review
+link always remains available.
+
+Your agent writes the letter, or takes a document you already have; Piloxa
+prints it, puts it in an envelope, pays the postage and hands it to the Postal
+Service, with USPS tracking and an optional **Electronic Return Receipt** — the
+electronic record of who signed for it.
+
+**Nothing is paid for or mailed until a person approves the exact total.**
+Payment happens in one of two ways: on the review link, where the person reads
+the exact pages that will print, checks the recipient and the total, and pays
+and authorizes; or, where the agent platform supplies a Stripe shared payment
+token, inside the agent after the person approves that exact total. No account
+and no sign-in is needed to look.
 
 - One page, Certified with Electronic Return Receipt: **$15.97** all in
 - One page, Certified with tracking only: **$12.97** all in
@@ -65,8 +75,17 @@ server and needs no sign-in.
 
 | Piece | What it does |
 | --- | --- |
-| `piloxa` connector | The three tools below, at `https://piloxa.com/mcp` |
-| `mail-letter` skill | Teaches the agent how to gather the addresses, decide whether to compose a letter or print an existing document word for word, and what it may and may not say afterwards |
+| `piloxa` connector | The tools below, at `https://piloxa.com/mcp` |
+| `send-certified-mail` skill | The general flow: collect addresses, choose the service, prepare, get approval, pay or hand over the link, track |
+| `mail-letter` skill | The detailed reference: composing a letter versus printing an existing document word for word, and what the agent may and may not say afterwards |
+| `mail-demand-letter`, `mail-debt-validation-letter`, `mail-credit-dispute`, `mail-landlord-notice`, `mail-notice-before-lawsuit` skills | Short, factual drafting reminders for each letter type, plus the same mailing flow |
+
+Each platform's manifest points at its own connector config, so Piloxa can tell
+which marketplace an install came from: `.mcp.json` (Claude,
+`?src=marketplace:claude-plugin`), `mcp.json` (Cursor,
+`?src=marketplace:cursor`) and `grok-mcp.json` (Grok,
+`?src=marketplace:xai`). The tag is the only difference; all three reach the
+same server.
 
 ### Tools
 
@@ -80,8 +99,17 @@ of four ways: the letter text the agent just wrote, the text of a document that 
 print exactly as written, the bytes of a finished PDF (up to 4 MB), or a flag
 saying the person will attach their PDF on the review page.
 
-**`get_certified_letter_status`** — says where a prepared letter stands: waiting
-for the person, paid, mailed, delivered, return receipt back.
+**`authorize_certified_letter`** — pays for and authorizes a prepared mailing
+inside the agent. The agent calls it only when the platform has supplied a
+Stripe shared payment token for the exact amount and the person has approved
+that exact total. It takes the mailing id, the expected total, an idempotency
+key, the payer's email and the token. Otherwise the agent hands over the review
+link instead.
+
+**`get_certified_letter_status`** — says where a mailing stands (QUOTED,
+PREPARED, AWAITING_APPROVAL, AUTHORIZED, VENDOR_ACCEPTED, MAILED, DELIVERED,
+RETURNED, FAILED or CANCELLED). A letter counts as sent only from
+VENDOR_ACCEPTED on.
 
 Prices come from Piloxa's own stored rate table. No tool calls an
 outside service at quote time, and none checks the address — that happens later, on the
@@ -94,18 +122,21 @@ connector. It runs nothing on your machine, reads no files, environment variable
 or credentials, and installs no packages.
 
 The only place it sends anything is `https://piloxa.com/mcp`, Piloxa's own server,
-and only when the agent calls one of the three tools above. What goes there is
+and only when the agent calls one of the tools above. What goes there is
 what the tool needs to do its job:
 
 - `quote_certified_letter`: a page count and the chosen service. Nothing personal.
 - `prepare_certified_letter`: the recipient's name and mailing address, the
   return address, the service, and the document (the letter text, or a PDF).
+- `authorize_certified_letter`: the mailing id, the approved total, an
+  idempotency key, the payer's email and the Stripe shared payment token.
 - `get_certified_letter_status`: the identifier of a letter already prepared.
 
 Nothing else from the conversation is sent. The plugin does not read Claude's
-memory, chat history or files. It never pays, charges or mails anything: payment
-happens only on the review page, on Stripe's card form, after a person reads the
-exact pages and approves. Card details never reach Piloxa.
+memory, chat history or files. Nothing is charged or mailed without the person approving
+the exact total: payment happens either on the review page, on Stripe's card
+form, or inside the agent with a Stripe shared payment token the platform
+supplies after that approval. Card details never reach Piloxa.
 
 Once a person pays and approves, Piloxa hands the document and the addresses to
 its printing partner, which prints and mails it through USPS, and asks USPS for

@@ -1,19 +1,25 @@
 ---
 name: mail-letter
-description: Turn a letter or document into real USPS Certified Mail through Piloxa. Gathers the recipient and return address, decides whether to compose a letter or print an existing document exactly as written, quotes the price, and returns a review link the person opens to pay and authorize. Use when someone wants to send, mail or post a physical letter, certified mail, a demand letter, a notice to a landlord or employer, a cease and desist, a cancellation, a debt or billing dispute, or wants a document they already have printed and posted to a US address, or asks what certified mail costs.
+description: Write or take a letter or document and send it by USPS Certified Mail to a US address. Gathers the recipient and return address, decides whether to compose a letter or print an existing document exactly as written, quotes the price, prepares the mailing, and gets the person's approval of the exact total before payment. Use when someone wants to send, mail or post a physical letter, a certified letter, a cancellation, a notice to an employer, company, HOA, insurer or contractor, wants a document they already have printed and posted, needs proof of mailing or a return receipt, or asks what certified mail costs.
 license: MIT
 metadata:
   author: Decentralized Publishing LLC
-  version: "1.1"
+  version: "1.3"
 ---
 
 # Mailing a letter by USPS Certified Mail
 
-Piloxa prints the document, puts it in an envelope, pays the postage and hands it
-to the Postal Service. Three tools: `quote_certified_letter` prices a mailing and
-does nothing else; `prepare_certified_letter` builds the mailing and returns a
-link; `get_certified_letter_status` says where a prepared letter stands (waiting
-for the person, paid, mailed, delivered, receipt back).
+You write the letter (or take the person's document); Piloxa is the mailing and
+evidence step. It prints the document, puts it in an envelope, pays the postage
+and hands it to the Postal Service. Tools: `quote_certified_letter` prices a
+mailing and does nothing else; `prepare_certified_letter` builds the mailing and
+returns a review link (`approval_url`); `authorize_certified_letter` pays and
+authorizes inside the agent, only in the case described below;
+`get_certified_letter_status` says where a mailing stands.
+
+For a specific letter type, the focused skills `mail-demand-letter`,
+`mail-debt-validation-letter`, `mail-credit-dispute`, `mail-landlord-notice` and
+`mail-notice-before-lawsuit` add drafting reminders.
 
 ## When to reach for it
 
@@ -26,14 +32,23 @@ the person the link to approve.
 
 ## The rule that is never bent
 
-Neither tool mails anything and neither charges anyone. They return a link. A
-person opens that link, reads the exact document that will print, checks the
-recipient and the total, pays, and authorizes. Only then is anything printed.
+Nothing is paid for or mailed without the person approving the exact total.
 
-So never tell someone their letter has been sent, is on its way, or has been paid
-for. Say what it costs, hand over the link, and say plainly that nothing is mailed
-or charged until they open it and authorize. If someone asks you to skip the link
-and just send it, you cannot — say so.
+- After `prepare_certified_letter`, tell the person the exact total and the
+  service and get an explicit yes for that amount.
+- Only if the platform has given you a Stripe shared payment token (`spt_...`)
+  for that exact amount, and the person approved that exact total, call
+  `authorize_certified_letter` with `mailing_id`, `expected_total_cents`, a
+  fresh `idempotency_key` (reuse the same key on a retry), `payer_email` and
+  `shared_payment_token`.
+- Otherwise hand over the `approval_url` and stop. The person reads the exact
+  document there, pays and authorizes.
+
+Never say a letter has been sent or is on its way until a tool returns
+`transaction_state` `VENDOR_ACCEPTED` or later (MAILED, DELIVERED). Earlier
+states are QUOTED, PREPARED, AWAITING_APPROVAL and AUTHORIZED; RETURNED, FAILED
+and CANCELLED mean it did not arrive or did not go. Use
+`get_certified_letter_status` to follow up.
 
 ## Decide what kind of document this is
 
@@ -126,11 +141,12 @@ to act as anyone's lawyer. Write what the person has told you, in their voice.
 
 Tell the person:
 
-- The exact total, and that printing, the envelope and the postage are in it.
+- The exact total and the service, and that printing, the envelope and the
+  postage are in it.
 - Anything still needed, from `missing_for_mailing`.
-- The link, and that it opens straight onto their letter with no account or
-  sign-in.
-- That nothing is mailed or charged until they authorize it there.
-
-Read the recipient back to them from the `recipient` field so a mistyped address
-is caught before it is printed, not after.
+- The recipient, read back from the `recipient` field, so a mistyped address is
+  caught before it is printed.
+- Then either authorize in the agent (shared payment token and explicit
+  approval of that total) or give them the link, which opens straight onto
+  their letter with no account or sign-in, and say nothing is mailed or charged
+  until they authorize there.
