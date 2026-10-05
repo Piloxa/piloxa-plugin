@@ -3,7 +3,7 @@
   "mcpServers": {
     "piloxa": {
       "type": "http",
-      "url": "https://piloxa.com/mcp?src=marketplace:cursor"
+      "url": "https://piloxa.com/mcp?src=marketplace:xai"
     }
   }
 }
