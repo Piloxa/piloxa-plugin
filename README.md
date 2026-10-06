@@ -1,8 +1,8 @@
 # Piloxa: Certified Mail for Claude, Cursor and Grok
 
-Piloxa — the physical-mail action layer for AI agents. Prepare, purchase, send
-and track USPS Certified Mail to any U.S. address. Human approval is required
-before payment or mailing.
+Piloxa — the physical-mail action layer for AI agents. Prepare, send and track
+USPS Certified Mail to any U.S. address. A person reviews and pays on Piloxa's
+own page before anything is mailed.
 
 One page is $15.97 with the Electronic Return Receipt, $12.97 with tracking
 only, $24.21 with the Evidence Pack or $50.10 as a Deadline Notice. The review
@@ -14,11 +14,10 @@ Service, with USPS tracking and an optional **Electronic Return Receipt** — th
 electronic record of who signed for it.
 
 **Nothing is paid for or mailed until a person approves the exact total.**
-Payment happens in one of two ways: on the review link, where the person reads
-the exact pages that will print, checks the recipient and the total, and pays
-and authorizes; or, where the agent platform supplies a Stripe shared payment
-token, inside the agent after the person approves that exact total. No account
-and no sign-in is needed to look.
+In Claude, payment happens only on the review link: the person reads the exact
+pages that will print, checks the recipient and the total, and pays and
+authorizes there. The plugin never pays or charges anything from inside the
+conversation. No account and no sign-in is needed to look.
 
 - One page, Certified with Electronic Return Receipt: **$15.97** all in
 - One page, Certified with tracking only: **$12.97** all in
@@ -99,12 +98,10 @@ of four ways: the letter text the agent just wrote, the text of a document that 
 print exactly as written, the bytes of a finished PDF (up to 4 MB), or a flag
 saying the person will attach their PDF on the review page.
 
-**`authorize_certified_letter`** — pays for and authorizes a prepared mailing
-inside the agent. The agent calls it only when the platform has supplied a
-Stripe shared payment token for the exact amount and the person has approved
-that exact total. It takes the mailing id, the expected total, an idempotency
-key, the payer's email and the token. Otherwise the agent hands over the review
-link instead.
+In-agent payment (`authorize_certified_letter`) is not offered in Claude. It
+exists only for agent platforms that supply a Stripe shared payment token, and
+is currently switched off there too; everywhere else the person pays on the
+review link.
 
 **`get_certified_letter_status`** — says where a mailing stands (QUOTED,
 PREPARED, AWAITING_APPROVAL, AUTHORIZED, VENDOR_ACCEPTED, MAILED, DELIVERED,
@@ -117,8 +114,8 @@ review page, before anyone pays.
 
 ## What this plugin sends, and where
 
-The plugin has no code of its own: one skill (plain instructions) and one remote
-connector. It runs nothing on your machine, reads no files, environment variables
+The plugin has no code of its own: seven skills (plain instructions) and one
+remote connector. It runs nothing on your machine, reads no files, environment variables
 or credentials, and installs no packages.
 
 The only place it sends anything is `https://piloxa.com/mcp`, Piloxa's own server,
@@ -128,15 +125,12 @@ what the tool needs to do its job:
 - `quote_certified_letter`: a page count and the chosen service. Nothing personal.
 - `prepare_certified_letter`: the recipient's name and mailing address, the
   return address, the service, and the document (the letter text, or a PDF).
-- `authorize_certified_letter`: the mailing id, the approved total, an
-  idempotency key, the payer's email and the Stripe shared payment token.
 - `get_certified_letter_status`: the identifier of a letter already prepared.
 
 Nothing else from the conversation is sent. The plugin does not read Claude's
 memory, chat history or files. Nothing is charged or mailed without the person approving
-the exact total: payment happens either on the review page, on Stripe's card
-form, or inside the agent with a Stripe shared payment token the platform
-supplies after that approval. Card details never reach Piloxa.
+the exact total: payment happens on the review page, on Stripe's card form.
+Card details never reach Piloxa.
 
 Once a person pays and approves, Piloxa hands the document and the addresses to
 its printing partner, which prints and mails it through USPS, and asks USPS for

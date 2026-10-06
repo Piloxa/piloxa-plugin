@@ -1,8 +1,8 @@
 {
   "name": "piloxa",
   "displayName": "Piloxa: Certified Mail",
-  "version": "1.3.0",
-  "description": "Piloxa — the physical-mail action layer for AI agents. Prepare, purchase, send and track USPS Certified Mail to any U.S. address. Human approval is required before payment or mailing. One page is $15.97 with the Electronic Return Receipt, $12.97 with tracking only, $24.21 with the Evidence Pack or $50.10 as a Deadline Notice; up to 10 pages. Payment happens either on a review link, which always remains available, or, where the agent platform supplies a Stripe shared payment token, inside the agent after the person approves the exact total.",
+  "version": "1.3.1",
+  "description": "Send a letter or document by real USPS Certified Mail to any U.S. address, and track it. Claude prepares the mailing and hands back a review link; the person reads the exact pages, checks the recipient and the one total, then pays and authorizes there. Nothing is printed, mailed or charged from inside the conversation. One page is $15.97 with the Electronic Return Receipt, $12.97 with tracking only, $24.21 with the Evidence Pack or $50.10 as a Deadline Notice; up to 10 pages.",
   "author": {
     "name": "Decentralized Publishing LLC",
     "email": "support@piloxa.com",
